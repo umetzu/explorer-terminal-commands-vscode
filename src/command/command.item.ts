@@ -15,8 +15,9 @@ export class TerminalCommandItem extends vscode.TreeItem {
 	 * @param label
 	 * @param terminalCommand
 	 */
-
-	constructor(readonly context: vscode.ExtensionContext, label: string, terminalCommand: iTerminalCommand) {
+	isFile = false;
+	
+	constructor(readonly context: vscode.ExtensionContext, label: string, terminalCommand: iTerminalCommand, isFile: boolean) {
 		super(label, vscode.TreeItemCollapsibleState.None);
 
 		this.terminalCommand = terminalCommand;
@@ -26,8 +27,13 @@ export class TerminalCommandItem extends vscode.TreeItem {
 			title: "Execute",
 			arguments: [this]
 		};
+		this.isFile = isFile;
 
-		this.refreshIcon();
+		if (isFile) {
+			this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+		} else {
+			this.refreshIcon();
+		}
 	}
 
 	/**
@@ -54,14 +60,17 @@ export class TerminalCommandItem extends vscode.TreeItem {
   }
   
   exec() {
+	if (this.isFile) {
+		return;
+	}
+
     let command = this.terminalCommand;
-    let opts = {
-      cwd: command.cwd,
-      name: command.name || command.command || "Terminal Quick Commands"
-    };
     
-    let term = terminalFactory.getTerminal(opts, command.multi);
-    term.show();
-    term.sendText(command.command, command.auto);
+    let term = terminalFactory.getTerminal();
+	if (term)
+	{
+    	term.sendText(command.command, command.auto);
+		term.show(false);
+	}
   }
 }

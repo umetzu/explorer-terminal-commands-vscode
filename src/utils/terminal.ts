@@ -36,46 +36,22 @@ class TerminalFactory {
   /**
    * Gets terminal
    * @param options 
-   * @param [multi] 
-   * @returns terminal 
+   * @returns terminal or undefined
    */
 
-  public getTerminal(options: vscode.TerminalOptions, multi: Boolean = false): vscode.Terminal {
-    let found = this.findTerminalIndex(options);
-    if (found > -1 && this.terminals[found] && multi === false)
-      this.disposeTerminal(options);
+  public getTerminal(): vscode.Terminal | undefined {
+    let terminal = vscode.window.activeTerminal;
 
-    let terminal = vscode.window.createTerminal(options);
-    this.terminals.push(terminal);
+    if (!terminal) {
+        terminal = vscode.window.createTerminal();
+        if (!terminal) {
+            vscode.window.showWarningMessage("Send snippet to Terminal: No Terminal available");
+            return;
+        }
+        terminal.show(true);
+    }
+
     return terminal;
-  }
-
-  /**
-   * Finds terminal index
-   * @param options 
-   * @returns terminal index 
-   */
-
-  private findTerminalIndex(options: vscode.TerminalOptions): number {
-    return this.terminals.findIndex((c: vscode.Terminal) => c.name === options.name);
-  }
-
-  /**
-   * Disposes terminal
-   * @param options 
-   * @returns terminal 
-   */
-  
-  private disposeTerminal(options: vscode.TerminalOptions): Boolean {
-    if (this.terminals.length === 0) return false;
-
-    let found = this.findTerminalIndex(options);
-    if (found === -1 || !this.terminals[found])
-      return false;
-
-    this.terminals[found].dispose();
-    this.terminals.splice(found, 1);
-    return true;
   }
 }
 

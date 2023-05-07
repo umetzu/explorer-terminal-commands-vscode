@@ -34,18 +34,17 @@
         {
           "id": "explorerTerminalCommands",
           "name": "Terminal Quick Commands"
-        },
-        {
-          "id": "composeTerminalCommands",
-          "name": "Compose Quick Commands",
-          "when": "config.explorerTerminal.showDockerCommands == true"
-        }        
+        }       
       ]
     },
 		"commands": [
 			{
 				"command": "explorerTerminalCommands.executeCommand",
 				"title": "Execute command"
+      },
+      {
+				"command": "explorerTerminalCommands.executeSelection",
+				"title": "Execute selection"
       },
       {
         "command": "explorerTerminalCommands.refreshCommands",
@@ -153,6 +152,7 @@
 		"mocha": "^6.2.2",
 		"typescript": "^3.6.4",
 		"tslint": "^5.20.0",
-		"vscode-test": "^1.2.2"
+		"vscode-test": "^1.2.2",
+    "vscode-uri": "3.0.7"
 	}
 }

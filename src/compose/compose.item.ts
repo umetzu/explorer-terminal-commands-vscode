@@ -45,7 +45,6 @@ export abstract class ComposeTreeItem<T> extends TreeItem {
             multi: true,
             name: name,
             cwd: cwd
-        });
+        }, false);
 	}
-
 }
