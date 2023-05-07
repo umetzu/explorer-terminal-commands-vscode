@@ -76,7 +76,15 @@ export class ConfigManager {
 
         for (let index = 0; index < allFiles.length; index++) {
             const fileUri = allFiles[index];
-            let document = await vscode.workspace.openTextDocument(fileUri);
+
+            let document:vscode.TextDocument;
+            try 
+            {
+                document = await vscode.workspace.openTextDocument(fileUri);
+            }
+            catch{
+                continue;
+            }
 
             if (document.lineCount > 0) {
                 if (!document.lineAt(0).text.startsWith("#snippet")) {
@@ -99,7 +107,7 @@ export class ConfigManager {
                     var blockText = this.getBlockData(document, blockLineStart, currentLineNumber);
 
                     if (blockText && blockText.command.trim().length > 0) {
-                        blockText.fileName = vscodeUri.Utils.basename(fileUri);
+                        blockText.fileName = fileUri.path.split("/").pop() + "";
                         results.push(blockText);
                     }
 
