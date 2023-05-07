@@ -4,73 +4,72 @@ import { iTerminalCommand } from "../utils/config";
 import { terminalFactory } from "../utils/terminal";
 
 export class TerminalCommandItem extends vscode.TreeItem {
-	/**
-	 * Attrs
-	 */
+    /**
+     * Attrs
+     */
 
-	terminalCommand: iTerminalCommand;
+    terminalCommand: iTerminalCommand;
 
-	/**
-	 * Creates an instance of terminal command item.
-	 * @param label
-	 * @param terminalCommand
-	 */
-	isFile = false;
-	
-	constructor(readonly context: vscode.ExtensionContext, label: string, terminalCommand: iTerminalCommand, isFile: boolean) {
-		super(label, vscode.TreeItemCollapsibleState.None);
+    /**
+     * Creates an instance of terminal command item.
+     * @param label
+     * @param terminalCommand
+     */
+    isFile = false;
 
-		this.terminalCommand = terminalCommand;
-    	this.tooltip = terminalCommand.command;
-		this.command = {
-			command: "explorerTerminalCommands.executeCommand",
-			title: "Execute",
-			arguments: [this]
-		};
-		this.isFile = isFile;
+    constructor(readonly context: vscode.ExtensionContext, label: string, terminalCommand: iTerminalCommand, isFile: boolean) {
+        super(label, vscode.TreeItemCollapsibleState.None);
 
-		if (isFile) {
-			this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
-		} else {
-			this.refreshIcon();
-		}
-	}
+        this.terminalCommand = terminalCommand;
+        this.tooltip = terminalCommand.command;
+        this.command = {
+            command: "explorerTerminalCommands.executeCommand",
+            title: "Execute",
+            arguments: [this]
+        };
+        this.isFile = isFile;
 
-	/**
-	 * Set treeitem icon
-	 * Auto commands will be displayed with a blue icon
-	 * @returns
-	 */
+        if (isFile) {
+            this.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+        } else {
+            this.refreshIcon();
+        }
+    }
 
-	refreshIcon() {
-		const iconPath = path.join(__filename, "..", "..", "resources");
+    /**
+     * Set treeitem icon
+     * Auto commands will be displayed with a blue icon
+     * @returns
+     */
 
-		if (this.terminalCommand.auto) {
-			this.iconPath = {
-				light: this.context.asAbsolutePath('resources/light/blue.svg'),
-				dark: this.context.asAbsolutePath('resources/dark/blue.svg')
-			};
-			return;
-		}
+    refreshIcon() {
+        const iconPath = path.join(__filename, "..", "..", "resources");
 
-		this.iconPath = {
-			light: this.context.asAbsolutePath('resources/light/default.svg'),
-			dark: this.context.asAbsolutePath('resources/dark/default.svg')
-		};
-  }
-  
-  exec() {
-	if (this.isFile) {
-		return;
-	}
+        if (this.terminalCommand.auto) {
+            this.iconPath = {
+                light: this.context.asAbsolutePath('resources/light/blue.svg'),
+                dark: this.context.asAbsolutePath('resources/dark/blue.svg')
+            };
+            return;
+        }
 
-    let command = this.terminalCommand;
-    
-    let term = terminalFactory.getTerminal();
-	if (term)
-	{
-    	term.sendText(command.command, command.auto);
-		term.show(false);
-	}
-  }
+        this.iconPath = {
+            light: this.context.asAbsolutePath('resources/light/default.svg'),
+            dark: this.context.asAbsolutePath('resources/dark/default.svg')
+        };
+    }
+
+    exec() {
+        if (this.isFile) {
+            return;
+        }
+
+        let command = this.terminalCommand;
+
+        let term = terminalFactory.getTerminal();
+        if (term) {
+            term.sendText(command.command, command.auto);
+            term.show(false);
+        }
+    }
 }

@@ -5,54 +5,54 @@ import * as vscode from "vscode";
  */
 
 class TerminalFactory {
-  /**
-   * Attrs
-   */
+    /**
+     * Attrs
+     */
 
-  private static instance: TerminalFactory;
-  private terminals: vscode.Terminal[];
+    private static instance: TerminalFactory;
+    private terminals: vscode.Terminal[];
 
-  /**
-   * Creates an instance of terminal factory.
-   */
+    /**
+     * Creates an instance of terminal factory.
+     */
 
-  private constructor() {
-    this.terminals = [];
-  }
-
-  /**
-   * Gets instance
-   * @returns instance 
-   */
-
-  static getInstance(): TerminalFactory {
-    if (!TerminalFactory.instance) {
-      TerminalFactory.instance = new TerminalFactory();
+    private constructor() {
+        this.terminals = [];
     }
 
-    return TerminalFactory.instance;
-  }
+    /**
+     * Gets instance
+     * @returns instance 
+     */
 
-  /**
-   * Gets terminal
-   * @param options 
-   * @returns terminal or undefined
-   */
-
-  public getTerminal(): vscode.Terminal | undefined {
-    let terminal = vscode.window.activeTerminal;
-
-    if (!terminal) {
-        terminal = vscode.window.createTerminal();
-        if (!terminal) {
-            vscode.window.showWarningMessage("Send snippet to Terminal: No Terminal available");
-            return;
+    static getInstance(): TerminalFactory {
+        if (!TerminalFactory.instance) {
+            TerminalFactory.instance = new TerminalFactory();
         }
-        terminal.show(true);
+
+        return TerminalFactory.instance;
     }
 
-    return terminal;
-  }
+    /**
+     * Gets terminal
+     * @param options 
+     * @returns terminal or undefined
+     */
+
+    public getTerminal(): vscode.Terminal | undefined {
+        let terminal = vscode.window.activeTerminal;
+
+        if (!terminal) {
+            terminal = vscode.window.createTerminal();
+            if (!terminal) {
+                vscode.window.showWarningMessage("Send snippet to Terminal: No Terminal available");
+                return;
+            }
+            terminal.show(true);
+        }
+
+        return terminal;
+    }
 }
 
 let terminalFactory = TerminalFactory.getInstance();

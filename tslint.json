@@ -1,8 +1,8 @@
 {
-	"rules": {
-		"semicolon": [
-			true,
-			"always"
-		]
-	}
+    "rules": {
+        "semicolon": [
+            true,
+            "always"
+        ]
+    }
 }
