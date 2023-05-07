@@ -4,15 +4,15 @@ import { ExtensionContext, window, commands } from 'vscode';
 
 export async function activate(context: ExtensionContext) {
     const commandProvider = new CommandTreeViewProvider(context);
-    const selectionProvider = new CommandEditorProvider();
+    
     await commandProvider.loadCommands();
     window.registerTreeDataProvider('explorerTerminalCommands', commandProvider);
-
     let execCommand = commands.registerCommand('explorerTerminalCommands.executeCommand', (cmd) => {
         cmd.exec();
     });
 
     let selectCommand = commands.registerCommand('explorerTerminalCommands.executeSelection', (cmd) => {
+        const selectionProvider = new CommandEditorProvider();
         selectionProvider.exec();
     });
 

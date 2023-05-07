@@ -39,8 +39,8 @@
         },
         "commands": [
             {
-                "command": "explorerTerminalCommands.executeCommand",
-                "title": "Explorer Terminal Execute command"
+                "command": "explorerTerminalCommands.executeSelection",
+                "title": "Explorer Terminal Execute selection"
             },
             {
                 "command": "explorerTerminalCommands.refreshCommands",
